@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:10:58 by mosmont           #+#    #+#             */
-/*   Updated: 2024/11/25 01:22:01 by mosmont          ###   ########.fr       */
+/*   Updated: 2024/12/04 19:23:17 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,44 +14,60 @@
 
 static void	pixel_render(t_fractol *fractol, int x, int y, int color)
 {
-	*(unsigned int*)(fractol->image->data + (y * fractol->image->size_line + x * (fractol->image->bpp / 8))) = color;
+	unsigned int	pixel;
+
+	pixel = (y * fractol->image->size_line + x * (fractol->image->bpp / 8));
+	*(unsigned int *)(fractol->image->data + pixel) = color;
 }
 
-double	x_to_plan(int x, t_fractol *fractol)
+int	render_color(t_fractol *fractol, int i)
 {
-	return ((x * ((1.0 - (-2.0)) / (double)WIDTH) + (-2.0)) / fractol->zoom + fractol->offset_x);
+	int	color;
+
+	if (i == fractol->iteration)
+		color = 0x000000;
+	else
+		color = i * 0xf5a142;
+	return (color);
 }
 
-double	y_to_plan(int y, t_fractol *fractol)
+void	update_position(int x, int y, t_fractol *fractol)
 {
-	return ((-y * ((1.5 - (-1.5)) / (double)HEIGHT) + 1.5) / fractol->zoom + fractol->offset_y);
+	if (fractol->fractol_type == 0)
+	{
+		fractol->c.x = fractol->precalcul_x[x];
+		fractol->c.y = fractol->precalcul_y[y];
+	}
+	else
+	{
+		fractol->z.x = fractol->precalcul_x[x];
+		fractol->z.y = fractol->precalcul_y[y];
+	}
 }
 
 void	calcult(int x, int y, t_fractol *fractol)
 {
 	t_complex	z;
-	t_complex julia_c = {-0.4, 0.6};
+	t_complex	c;
 	double		temp;
 	int			i;
-	int			color;
+	double		magnitude_squared;
 
 	i = 0;
-	z.x = x_to_plan(x, fractol);
-	z.y = y_to_plan(y, fractol);
-	while (i < fractol->iteration)
+	magnitude_squared = 0;
+	z = fractol->z;
+	c = fractol->c;
+	temp = 0;
+	update_position(x, y, fractol);
+	while (i < fractol->iteration && magnitude_squared <= 4)
 	{
-		temp = (z.x * z.x) - (z.y * z.y) + julia_c.x;
-		z.y = 2 * z.x * z.y + julia_c.y;
+		temp = (z.x * z.x) - (z.y * z.y) + c.x;
+		z.y = 2 * z.x * z.y + c.y;
 		z.x = temp;
-		if (z.x * z.x + z.y * z.y > 4)
-			break ;
+		magnitude_squared = z.x * z.x + z.y * z.y;
 		i++;
 	}
-	if (i == fractol->iteration)
-		color = 0x000000;
-	else
-		color = (i * 255) / fractol->iteration;
-	pixel_render(fractol, x, y, color);
+	pixel_render(fractol, x, y, render_color(fractol, i));
 }
 
 void	fractol_render(t_fractol *fractol)
@@ -70,6 +86,6 @@ void	fractol_render(t_fractol *fractol)
 		}
 		x++;
 	}
-	mlx_put_image_to_window(fractol->mlx, fractol->windows, fractol->image->image, 0, 0);
-	printf("render\n");
+	mlx_put_image_to_window(fractol->mlx,
+		fractol->windows, fractol->image->image, 0, 0);
 }

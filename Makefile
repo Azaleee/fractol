@@ -9,7 +9,7 @@ PRINTF_DIR = ft_printf/
 SRC_DIR = src/
 OBJ_DIR = obj/
 
-SRC_FILES = main.c init_fractol.c render.c
+SRC_FILES = main.c init_fractol.c render.c input.c destroy_fractol.c math_func.c usage_func.c libft_func.c
 OBJ_FILES = $(SRC_FILES:.c=.o)
 
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
@@ -27,18 +27,18 @@ $(PRINTF):
 	$(MAKE) -C $(PRINTF_DIR)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(PRINTF) $(MLX) -ldl -lglfw -pthread -lm -lXext -lX11 -o $(NAME) 
+	$(CC) $(CFLAGS) $(OBJ) $(PRINTF) $(MLX) -ldl -lglfw -pthread -lm -lXext -lX11 -o $(NAME) -g -lm
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -I$(INCLUDES) -o $@ -c $<
+	$(CC) $(CFLAGS) -I$(INCLUDES) -o $@ -c $< -g
 
 clean:
 	rm -rf $(OBJ_DIR)
 	$(MAKE) -C $(MINILIB_DIR) clean
 	$(MAKE) -C $(PRINTF_DIR) clean
 
-flcean: clean
+fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C $(PRINTF_DIR) fclean
 

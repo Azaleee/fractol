@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   math_func.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/24 22:28:53 by mosmont           #+#    #+#             */
-/*   Updated: 2024/12/04 19:17:46 by mosmont          ###   ########.fr       */
+/*   Created: 2024/12/03 16:54:46 by mosmont           #+#    #+#             */
+/*   Updated: 2024/12/04 19:16:58 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fractol.h"
 
-int	main(int ac, char **av)
+double	x_to_plan(int x, t_fractol *fractol)
 {
-	t_fractol	*fractol;
-
-	fractol = malloc(sizeof(t_fractol));
-	check_arg(ac, av, fractol);
-	init_fractol(fractol, fractol->name);
-	precalcul_coord(fractol);
-	fractol_render(fractol);
-	mlx_loop(fractol->mlx);
-	return (0);
+	return ((x * fractol->scale_x + (-2)) / fractol->zoom + fractol->offset_x);
 }
+
+double	y_to_plan(int y, t_fractol *fractol)
+{
+	return ((-y * fractol->scale_y + 2.1) / fractol->zoom + fractol->offset_y);
+}
+

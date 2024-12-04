@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 22:55:34 by mosmont           #+#    #+#             */
-/*   Updated: 2024/11/25 01:25:31 by mosmont          ###   ########.fr       */
+/*   Updated: 2024/12/04 19:16:27 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,61 @@
 
 static void	data_init(t_fractol *fractol)
 {
-	fractol->iteration = 500;
-	fractol->zoom = 30.0;
-	fractol->offset_x = -0.4;
+	fractol->iteration = MAX_ITERATION;
+	fractol->zoom = 1.0;
+	fractol->offset_x = 0;
 	fractol->offset_y = 0;
+	fractol->image->colors = 0;
+	fractol->precalcul_x = malloc(WIDTH * sizeof(double));
+	fractol->precalcul_y = malloc(HEIGHT * sizeof(double));
+	fractol->scale_x = ((1.5 - (-2.5)) / (double)WIDTH);
+	fractol->scale_y = ((2.1 - (-2.1)) / (double)HEIGHT);
+}
+
+void	init_hook(t_fractol *fractol)
+{
+	mlx_hook(fractol->windows, 2, 1L << 0, keyboard, fractol);
+	mlx_mouse_hook(fractol->windows, mouse, fractol);
+	mlx_hook(fractol->windows, 17, 0, destroy_fractol, fractol);
+}
+
+void	precalcul_coord(t_fractol *fractol)
+{
+	int		x;
+	int		y;
+
+	x = 0;
+	y = 0;
+	while (x < WIDTH)
+	{
+		fractol->precalcul_x[x] = x_to_plan(x, fractol);
+		x++;
+	}
+	while (y < HEIGHT)
+	{
+		fractol->precalcul_y[y] = y_to_plan(y, fractol);
+		y++;
+	}
+}
+
+void	init_fractol_type(int type, char **av, t_fractol *fractol)
+{
+	if (type == 0)
+	{
+		fractol->fractol_type = 0;
+		fractol->c.x = x_to_plan(0, fractol);
+		fractol->c.y = y_to_plan(0, fractol);
+		fractol->z.x = 0;
+		fractol->z.y = 0;
+	}
+	else if (type == 1)
+	{
+		fractol->fractol_type = 1;
+		fractol->c.x = ft_strtod(av[2], fractol);
+		fractol->c.y = ft_strtod(av[3], fractol);
+		fractol->z.x = x_to_plan(0, fractol);
+		fractol->z.y = y_to_plan(0, fractol);
+	}
 }
 
 void	init_fractol(t_fractol *fractol, char *name)
@@ -37,4 +88,11 @@ void	init_fractol(t_fractol *fractol, char *name)
 			&fractol->image->size_line,
 			&fractol->image->endian);
 	data_init(fractol);
+	init_hook(fractol);
 }
+// unsigned int	calcul_pixel;
+// 	unsigned int	calcul_bpp;
+
+// 	calcul_bpp = (fractol->image->bpp / 8);
+// 	calcul_pixel = (y * fractol->image->size_line + x * calcul_bpp);
+// 	*(unsigned int *)(fractol->image->data + calcul_pixel) = color;

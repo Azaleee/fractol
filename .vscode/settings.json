@@ -1,5 +1,10 @@
 {
 	"files.associations": {
-		"fractol.h": "c"
+		"fractol.h": "c",
+		"ft_printf.h": "c",
+		"mlx.h": "c",
+		"random": "c",
+		"algorithm": "c",
+		"math.h": "c"
 	}
 }
