@@ -9,7 +9,7 @@ PRINTF_DIR = ft_printf/
 SRC_DIR = src/
 OBJ_DIR = obj/
 
-SRC_FILES = main.c init_fractol.c render.c input.c destroy_fractol.c math_func.c usage_func.c libft_func.c
+SRC_FILES = main.c init_fractol.c render.c input.c destroy_fractol.c math_func.c usage_func.c libft_func.c julia_animation.c
 OBJ_FILES = $(SRC_FILES:.c=.o)
 
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
@@ -42,4 +42,4 @@ fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C $(PRINTF_DIR) fclean
 
-re: flcean all
+re: fclean all

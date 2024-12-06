@@ -6,13 +6,13 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 22:55:34 by mosmont           #+#    #+#             */
-/*   Updated: 2024/12/04 19:16:27 by mosmont          ###   ########.fr       */
+/*   Updated: 2024/12/04 20:51:14 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fractol.h"
 
-static void	data_init(t_fractol *fractol)
+void	data_init(t_fractol *fractol)
 {
 	fractol->iteration = MAX_ITERATION;
 	fractol->zoom = 1.0;
@@ -21,8 +21,8 @@ static void	data_init(t_fractol *fractol)
 	fractol->image->colors = 0;
 	fractol->precalcul_x = malloc(WIDTH * sizeof(double));
 	fractol->precalcul_y = malloc(HEIGHT * sizeof(double));
-	fractol->scale_x = ((1.5 - (-2.5)) / (double)WIDTH);
-	fractol->scale_y = ((2.1 - (-2.1)) / (double)HEIGHT);
+	fractol->scale_x = ((2 - (-2)) / (double)WIDTH);
+	fractol->scale_y = ((2 - (-2)) / (double)HEIGHT);
 }
 
 void	init_hook(t_fractol *fractol)

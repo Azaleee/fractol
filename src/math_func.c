@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:54:46 by mosmont           #+#    #+#             */
-/*   Updated: 2024/12/04 19:16:58 by mosmont          ###   ########.fr       */
+/*   Updated: 2024/12/04 20:51:26 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@ double	x_to_plan(int x, t_fractol *fractol)
 
 double	y_to_plan(int y, t_fractol *fractol)
 {
-	return ((-y * fractol->scale_y + 2.1) / fractol->zoom + fractol->offset_y);
+	return ((-y * fractol->scale_y + 2) / fractol->zoom + fractol->offset_y);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 13:49:23 by mosmont           #+#    #+#             */
-/*   Updated: 2024/12/04 19:25:58 by mosmont          ###   ########.fr       */
+/*   Updated: 2024/12/04 20:56:22 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@ void	check_arg(int ac, char **av, t_fractol *fractol)
 	{
 		fractol->name = ft_strdup("Julia");
 		init_fractol_type(1, av, fractol);
+	}
+	else if (ac == 2 && (ft_strncmp(av[1], "juanim", ft_strlen(av[1])) == 0))
+	{
+		init_fractol(fractol, "Julia Animation");
+		mlx_loop_hook(fractol->mlx, animation_render, &fractol);
 	}
 	else
 		print_usage(fractol);

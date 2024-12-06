@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:10:03 by mosmont           #+#    #+#             */
-/*   Updated: 2024/12/04 18:49:46 by mosmont          ###   ########.fr       */
+/*   Updated: 2024/12/04 21:27:39 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,16 @@ int	keyboard(int keycode, t_fractol *fractol)
 		fractol->offset_y += 0.1 / fractol->zoom;
 	else if (keycode == 65364)
 		fractol->offset_y -= 0.1 / fractol->zoom;
+	else if (keycode == 65438)
+	{
+		fractol->c.x += 0.01;
+		fractol->c.y += 0.01;
+	}
 	else if (keycode == 65436)
-		fractol->image->colors *= 5;
+	{
+		fractol->c.x -= 0.01;
+		fractol->c.y -= 0.01;
+	}
 	else if (keycode == 65307)
 		exit_application(fractol);
 	else

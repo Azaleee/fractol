@@ -1,26 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   julia_animation.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/24 22:28:53 by mosmont           #+#    #+#             */
-/*   Updated: 2024/12/04 20:35:34 by mosmont          ###   ########.fr       */
+/*   Created: 2024/12/04 20:15:33 by mosmont           #+#    #+#             */
+/*   Updated: 2024/12/04 20:58:53 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fractol.h"
 
-int	main(int ac, char **av)
+int	animation_render(t_fractol *fractol)
 {
-	t_fractol	*fractol;
-
-	fractol = malloc(sizeof(t_fractol));
-	check_arg(ac, av, fractol);
-	init_fractol(fractol, fractol->name);
-	precalcul_coord(fractol);
-	fractol_render(fractol);
-	mlx_loop(fractol->mlx);
+	int	i;
+	
+	fractol->z.x = x_to_plan(0, fractol);
+	fractol->z.y = y_to_plan(0, fractol);
+	fractol->c.x = -2.0;
+	fractol->c.y = -2.0;
+	i = 0;
+	while (fractol->c.x < 2.0)
+	{
+		fractol->c.y = -2.0;
+		while (fractol->c.y < 2.0)
+		{
+			if (i % 10 == 9)
+				fractol_render(fractol);
+			fractol->c.y += 0.1;
+			i++;
+		}
+		fractol->c.x += 0.1;
+	}
+	if (fractol->c.x >= 2.0 && fractol->c.y >= 2.0)
+		exit(0);
 	return (0);
 }

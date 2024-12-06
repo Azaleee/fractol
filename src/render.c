@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:10:58 by mosmont           #+#    #+#             */
-/*   Updated: 2024/12/04 19:23:17 by mosmont          ###   ########.fr       */
+/*   Updated: 2024/12/04 20:00:49 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,20 @@ static void	pixel_render(t_fractol *fractol, int x, int y, int color)
 	*(unsigned int *)(fractol->image->data + pixel) = color;
 }
 
-int	render_color(t_fractol *fractol, int i)
+int	render_color(t_fractol *fractol, int i, double magnitude_squared)
 {
-	int	color;
+	double	t;
+	int		r;
+	int		g;
+	int		b;
 
 	if (i == fractol->iteration)
-		color = 0x000000;
-	else
-		color = i * 0xf5a142;
-	return (color);
+		return (0x000000);
+	t = (double)i / fractol->iteration;
+	r = (int)(9 * (1 - t) * t * t * t * 255);
+	g = (int)(15 * (1 - t) * (1 - t) * t * t * 255);
+	b = (int)(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
+	return ((r << 16) | (g << 8) | b);
 }
 
 void	update_position(int x, int y, t_fractol *fractol)
@@ -67,7 +72,7 @@ void	calcult(int x, int y, t_fractol *fractol)
 		magnitude_squared = z.x * z.x + z.y * z.y;
 		i++;
 	}
-	pixel_render(fractol, x, y, render_color(fractol, i));
+	pixel_render(fractol, x, y, render_color(fractol, i, magnitude_squared));
 }
 
 void	fractol_render(t_fractol *fractol)
