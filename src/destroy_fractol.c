@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:57:15 by mosmont           #+#    #+#             */
-/*   Updated: 2024/12/04 19:03:17 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/03 17:03:12 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,19 @@ void	exit_application(t_fractol *fractol)
 		mlx_destroy_image(fractol->mlx, fractol->image->image);
 		free(fractol->image);
 	}
-	mlx_destroy_display(fractol->mlx);
-	free(fractol->mlx);
-	free(fractol->precalcul_x);
-	free(fractol->precalcul_y);
-	free(fractol->name);
-	free(fractol);
+	if (fractol->mlx)
+	{
+		mlx_destroy_display(fractol->mlx);
+		free(fractol->mlx);
+	}
+	if (fractol->precalcul_x)
+		free(fractol->precalcul_x);
+	if (fractol->precalcul_y)
+		free(fractol->precalcul_y);
+	if (fractol->name)
+		free(fractol->name);
+	if (fractol)
+		free(fractol);
 	exit(0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 22:55:34 by mosmont           #+#    #+#             */
-/*   Updated: 2024/12/04 20:51:14 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/03 19:05:29 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	data_init(t_fractol *fractol)
 	fractol->precalcul_y = malloc(HEIGHT * sizeof(double));
 	fractol->scale_x = ((2 - (-2)) / (double)WIDTH);
 	fractol->scale_y = ((2 - (-2)) / (double)HEIGHT);
+	fractol->color_scheme = 0;
 }
 
 void	init_hook(t_fractol *fractol)
@@ -53,9 +54,12 @@ void	precalcul_coord(t_fractol *fractol)
 
 void	init_fractol_type(int type, char **av, t_fractol *fractol)
 {
-	if (type == 0)
+	if (type == 0 || type == 2)
 	{
-		fractol->fractol_type = 0;
+		if (type == 0)
+			fractol->fractol_type = 0;
+		else
+			fractol->fractol_type = 2;
 		fractol->c.x = x_to_plan(0, fractol);
 		fractol->c.y = y_to_plan(0, fractol);
 		fractol->z.x = 0;
@@ -71,11 +75,11 @@ void	init_fractol_type(int type, char **av, t_fractol *fractol)
 	}
 }
 
-void	init_fractol(t_fractol *fractol, char *name)
+int	init_fractol(t_fractol *fractol, char *name)
 {
 	fractol->mlx = mlx_init();
 	if (fractol->mlx == NULL)
-		ft_printf("TO DO RETURN ERROR DONT FORGET !!");
+		return (1);
 	fractol->windows = mlx_new_window(
 			fractol->mlx,
 			WIDTH,
@@ -89,6 +93,7 @@ void	init_fractol(t_fractol *fractol, char *name)
 			&fractol->image->endian);
 	data_init(fractol);
 	init_hook(fractol);
+	return (0);
 }
 // unsigned int	calcul_pixel;
 // 	unsigned int	calcul_bpp;

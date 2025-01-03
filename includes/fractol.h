@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 22:27:17 by mosmont           #+#    #+#             */
-/*   Updated: 2024/12/04 21:10:51 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/03 18:52:31 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@
 # define WIDTH 500
 # define HEIGHT 500
 # define MAX_ITERATION 100
+
+# define RESET "\033[0m"
+# define RED "\033[31m"
+# define GREEN "\033[32m"
+# define YELLOW "\033[33m"
+# define BLUE "\033[34m"
+# define MAGENTA "\033[35m"
+# define CYAN "\033[36m"
+# define WHITE "\033[37m"
+# define BOLD "\033[1m"
 
 typedef struct s_complex
 {
@@ -56,9 +66,10 @@ typedef struct s_fractol
 	double		scale_x;
 	double		scale_y;
 	t_image		*image;
+	int			color_scheme;
 }				t_fractol;
 
-void	init_fractol(t_fractol *fractol, char *name);
+int		init_fractol(t_fractol *fractol, char *name);
 void	init_fractol_type(int type, char **av, t_fractol *fractol);
 void	data_init(t_fractol *fractol);
 void	exit_application(t_fractol *fractol);
@@ -66,6 +77,11 @@ int		destroy_fractol(t_fractol *fractol);
 void	fractol_render(t_fractol *fractol);
 void	precalcul_coord(t_fractol *fractol);
 int		animation_render(t_fractol *fractol);
+
+void	basic_color(double t, int *r, int *g, int *b);
+void	psy_color(double t, int *r, int *g, int *b);
+void	vortex_color(double t, int *r, int *g, int *b);
+void	inv_polyjssp_color(double t, int *r, int *g, int *b);
 
 int		keyboard(int keycode, t_fractol *fractol);
 int		mouse(int button, int x, int y, t_fractol *fractol);

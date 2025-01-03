@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 13:49:23 by mosmont           #+#    #+#             */
-/*   Updated: 2024/12/04 20:56:22 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/03 19:13:48 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,39 @@
 
 void	print_usage(t_fractol *fractol)
 {
-	ft_printf("=========================\n");
-	ft_printf("\tFractol\n");
-	ft_printf("=========================\n");
-	ft_printf("For mandelbrot set :\n");
-	ft_printf("usage : fractol mandelbrot\n\n");
-	ft_printf("For julia set :\n");
-	ft_printf("usage : fractol julia c ci");
-	if (fractol != NULL)
-		free(fractol);
+	ft_printf(BOLD BLUE "==================================\n" RESET);
+	ft_printf(BOLD CYAN "            FRACTOL\n" RESET);
+	ft_printf(BOLD BLUE "==================================\n" RESET);
+	ft_printf("\n");
+	ft_printf(BOLD WHITE "Usage instructions:\n" RESET);
+	ft_printf(YELLOW "  For Mandelbrot set:\n" RESET);
+	ft_printf(GREEN "    fractol mandelbrot\n\n" RESET);
+	ft_printf(YELLOW "  For Julia set:\n" RESET);
+	ft_printf(GREEN "    fractol julia " WHITE "<c_real> <c_imaginary>\n\n");
+	ft_printf(YELLOW "  For Burning Ship set:\n" RESET);
+	ft_printf(GREEN "    fractol burningship\n\n" RESET);
+	if (fractol->name != NULL)
+		free(fractol->name);
+	free(fractol);
 	exit(0);
 }
 
 void	check_arg(int ac, char **av, t_fractol *fractol)
 {
-	if (ac == 2 && (ft_strncmp(av[1], "mandelbrot", ft_strlen(av[1])) == 0))
+	if (ac == 2 && (ft_strncmp(av[1], "mandelbrot", 11) == 0))
 	{
 		fractol->name = ft_strdup("Mandelbrot");
 		init_fractol_type(0, av, fractol);
 	}
-	else if (ac == 4 && (ft_strncmp(av[1], "julia", ft_strlen(av[1])) == 0))
+	else if (ac == 4 && (ft_strncmp(av[1], "julia", 6) == 0))
 	{
 		fractol->name = ft_strdup("Julia");
 		init_fractol_type(1, av, fractol);
 	}
-	else if (ac == 2 && (ft_strncmp(av[1], "juanim", ft_strlen(av[1])) == 0))
+	else if (ac == 2 && (ft_strncmp(av[1], "burningship", 12) == 0))
 	{
-		init_fractol(fractol, "Julia Animation");
-		mlx_loop_hook(fractol->mlx, animation_render, &fractol);
+		fractol->name = ft_strdup("Burningship OMGGG");
+		init_fractol_type(2, av, fractol);
 	}
 	else
 		print_usage(fractol);

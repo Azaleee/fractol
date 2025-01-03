@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:10:03 by mosmont           #+#    #+#             */
-/*   Updated: 2024/12/04 21:27:39 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/03 19:13:53 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	mouse(int button, int x, int y, t_fractol *fractol)
 	return (0);
 }
 
-int	keyboard(int keycode, t_fractol *fractol)
+void	handle_mouvement(int keycode, t_fractol *fractol)
 {
 	if (keycode == 65361)
 		fractol->offset_x -= 0.1 / fractol->zoom;
@@ -42,7 +42,23 @@ int	keyboard(int keycode, t_fractol *fractol)
 		fractol->offset_y += 0.1 / fractol->zoom;
 	else if (keycode == 65364)
 		fractol->offset_y -= 0.1 / fractol->zoom;
-	else if (keycode == 65438)
+}
+
+void	change_color(int keycode, t_fractol *fractol)
+{
+	if (keycode == 65434)
+		fractol->color_scheme = 1;
+	else if (keycode == 65429)
+		fractol->color_scheme = 0;
+	else if (keycode == 65431)
+		fractol->color_scheme = 2;
+	else if (keycode == 65432)
+		fractol->color_scheme = 3;
+}
+
+void	cool_feature(int keycode, t_fractol *fractol)
+{
+	if (keycode == 65438)
 	{
 		fractol->c.x += 0.01;
 		fractol->c.y += 0.01;
@@ -52,10 +68,15 @@ int	keyboard(int keycode, t_fractol *fractol)
 		fractol->c.x -= 0.01;
 		fractol->c.y -= 0.01;
 	}
-	else if (keycode == 65307)
+}
+
+int	keyboard(int keycode, t_fractol *fractol)
+{
+	if (keycode == 65307)
 		exit_application(fractol);
-	else
-		return (0);
+	handle_mouvement(keycode, fractol);
+	change_color(keycode, fractol);
+	cool_feature(keycode, fractol);
 	precalcul_coord(fractol);
 	fractol_render(fractol);
 	return (0);

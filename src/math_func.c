@@ -21,4 +21,3 @@ double	y_to_plan(int y, t_fractol *fractol)
 {
 	return ((-y * fractol->scale_y + 2) / fractol->zoom + fractol->offset_y);
 }
-

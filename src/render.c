@@ -6,7 +6,7 @@
 /*   By: mosmont <mosmont@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:10:58 by mosmont           #+#    #+#             */
-/*   Updated: 2024/12/04 20:00:49 by mosmont          ###   ########.fr       */
+/*   Updated: 2025/01/03 19:13:57 by mosmont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,25 @@ int	render_color(t_fractol *fractol, int i, double magnitude_squared)
 	int		r;
 	int		g;
 	int		b;
+	int		test;
 
 	if (i == fractol->iteration)
 		return (0x000000);
 	t = (double)i / fractol->iteration;
-	r = (int)(9 * (1 - t) * t * t * t * 255);
-	g = (int)(15 * (1 - t) * (1 - t) * t * t * 255);
-	b = (int)(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
+	if (fractol->color_scheme == 0)
+		basic_color(t, &r, &g, &b);
+	else if (fractol->color_scheme == 1)
+		psy_color(t, &r, &g, &b);
+	else if (fractol->color_scheme == 2)
+		vortex_color(t, &r, &g, &b);
+	else if (fractol->color_scheme == 3)
+		inv_polyjssp_color(t, &r, &g, &b);
 	return ((r << 16) | (g << 8) | b);
 }
 
 void	update_position(int x, int y, t_fractol *fractol)
 {
-	if (fractol->fractol_type == 0)
+	if (fractol->fractol_type == 0 || fractol->fractol_type == 2)
 	{
 		fractol->c.x = fractol->precalcul_x[x];
 		fractol->c.y = fractol->precalcul_y[y];
@@ -60,14 +66,17 @@ void	calcult(int x, int y, t_fractol *fractol)
 
 	i = 0;
 	magnitude_squared = 0;
-	z = fractol->z;
-	c = fractol->c;
 	temp = 0;
 	update_position(x, y, fractol);
+	z = fractol->z;
+	c = fractol->c;
 	while (i < fractol->iteration && magnitude_squared <= 4)
 	{
 		temp = (z.x * z.x) - (z.y * z.y) + c.x;
-		z.y = 2 * z.x * z.y + c.y;
+		if (fractol->fractol_type == 0 || fractol->fractol_type == 1)
+			z.y = 2 * z.x * z.y + c.y;
+		else
+			z.y = fabs(2 * z.x * z.y) + c.y;
 		z.x = temp;
 		magnitude_squared = z.x * z.x + z.y * z.y;
 		i++;
